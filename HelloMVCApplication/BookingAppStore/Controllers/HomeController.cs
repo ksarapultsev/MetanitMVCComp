@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BookingAppStore.Models;
+using BookingAppStore.Util;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace BookingAppStore.Controllers
 {
@@ -39,6 +42,23 @@ namespace BookingAppStore.Controllers
             db.SaveChanges();
             return "Спасибо, " + purchase.Person + ", за покупку!";
         }
-    
+
+        public ActionResult GetHtml()
+        {
+            return new HtmlResult("<h2>Hello World!</h2>");
+        }
+        
+        public ActionResult GetImage()
+        {
+            string path = "../Image/audi.jpg";
+            return new ImageResult(path);
+        }
+
+        public async Task<ActionResult> BookList()
+        {
+            IEnumerable<Book> books = await db.Books.ToListAsync();
+            ViewBag.Books = books;
+            return View("Index");
+        }
     }
 }
